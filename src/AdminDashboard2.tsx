@@ -89,7 +89,7 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   justifyContent: "flex-end",
 }));
 
-// Helper function to generate lots (same as before)
+// Helper function to generate lots
 const generateLots = () => {
   const sectors = ["A", "B", "C", "D"];
   let id = 1;
@@ -110,7 +110,7 @@ export default function AdminDashboard() {
   const [open, setOpen] = useState(false);
   const [currentView, setCurrentView] = useState("lots");
 
-  // State management (same as before)
+  // State management for lots, services, records, and customers
   const [lots, setLots] = useState<
     {
       id: number;
@@ -132,38 +132,50 @@ export default function AdminDashboard() {
     customerId: number | null;
     deceasedId: number | null;
   } | null>(null);
+
+  // Services, records
   const [services, setServices] = useState([
     { id: 1, name: "Cleaning", price: 999 },
     { id: 2, name: "Grave Restoration", price: 2500 },
   ]);
+
+  // Deceased records data
   const [deceasedRecords, setDeceasedRecords] = useState([
     {
       id: 1,
-      name: "John Doe",
+      name: "Lebron James",
       dateOfDeath: "2023-01-01",
       lotId: 2,
       customerId: 1,
     },
   ]);
+
+  // Customers data
   const [customers, setCustomers] = useState([
     {
       id: 1,
-      name: "Jane Smith",
-      email: "jane@example.com",
+      name: "Archie Albarico",
+      email: "archiealbarico@gmail.com",
       phone: "123-456-7890",
     },
   ]);
+
+  // New state variables for adding new service
   const [newService, setNewService] = useState({ name: "", price: "" });
   const [newRecord, setNewRecord] = useState({
     name: "",
     dateOfDeath: "",
     customerId: "",
   });
+
+  // New state variables for adding new customer
   const [newCustomer, setNewCustomer] = useState({
     name: "",
     email: "",
     phone: "",
   });
+
+  // New state variables for booking lot
   const [selectedCustomer, setSelectedCustomer] = useState("");
   const [bookingLot, setBookingLot] = useState<{
     id: number;
@@ -179,7 +191,7 @@ export default function AdminDashboard() {
   const [isAddRecordOpen, setIsAddRecordOpen] = useState(false);
   const [isAddServiceOpen, setIsAddServiceOpen] = useState(false);
 
-  // Filtered and sorted lots (same as before)
+  // Filtered and sorted lots
   const filteredLots = useMemo(() => {
     return lots.filter((lot) => {
       if (lotFilter === "available") return lot.available;
@@ -188,7 +200,7 @@ export default function AdminDashboard() {
     });
   }, [lots, lotFilter]);
 
-  // Functions for managing lots, services, records, and customers (same as before)
+  // Functions for managing lots, services, records, and customers
   const bookLot = (lotId: number) => {
     const lot = lots.find((l) => l.id === lotId);
     if (lot) {
@@ -196,6 +208,7 @@ export default function AdminDashboard() {
     }
   };
 
+  // Confirm booking
   const confirmBooking = () => {
     if (bookingLot) {
       if (isNewCustomer) {
@@ -220,6 +233,7 @@ export default function AdminDashboard() {
     }
   };
 
+  // Add new service
   const addService = () => {
     if (newService.name && newService.price) {
       setServices([
@@ -234,6 +248,7 @@ export default function AdminDashboard() {
     }
   };
 
+  // Add new record
   const addRecord = () => {
     if (newRecord.name && newRecord.dateOfDeath && newRecord.customerId) {
       const customer = customers.find(
@@ -271,6 +286,7 @@ export default function AdminDashboard() {
     }
   };
 
+  // Delete record
   const deleteRecord = (id: number) => {
     setDeceasedRecords(deceasedRecords.filter((record) => record.id !== id));
     setLots(
@@ -280,6 +296,7 @@ export default function AdminDashboard() {
     );
   };
 
+  // Add new customer
   const addCustomer = () => {
     if (newCustomer.name && newCustomer.email && newCustomer.phone) {
       setCustomers([
@@ -290,6 +307,7 @@ export default function AdminDashboard() {
     }
   };
 
+  // Delete customer
   const deleteCustomer = (id: number) => {
     setCustomers(customers.filter((customer) => customer.id !== id));
     setDeceasedRecords(
@@ -304,6 +322,7 @@ export default function AdminDashboard() {
     );
   };
 
+  // Render map View
   const renderMap = () => {
     return (
       <Box
@@ -352,6 +371,7 @@ export default function AdminDashboard() {
     );
   };
 
+  // Handle drawer open and close
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -360,6 +380,7 @@ export default function AdminDashboard() {
     setOpen(false);
   };
 
+  // Render content based on current view
   const renderContent = () => {
     switch (currentView) {
       case "lots":
